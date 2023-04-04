@@ -20,11 +20,32 @@ namespace MvcVetement.Controllers
         }
 
         // GET: Vetements
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string vetementGenre, string searchString)
         {
-              return _context.Vetement != null ? 
-                          View(await _context.Vetement.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Vetement'  is null.");
+            // Use LINQ to get list of genres.
+            IQueryable<string> genreQuery = from m in _context.Vetement
+                                            orderby m.Genre
+                                            select m.Genre;
+            var vetements = from m in _context.Vetement
+                         select m;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                vetements = vetements.Where(s => s.Title!.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(vetementGenre))
+            {
+                vetements = vetements.Where(x => x.Genre == vetementGenre);
+            }
+
+            var vetementGenreVM = new VetementGenreViewModel
+            {
+                Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                Movies = await vetements.ToListAsync()
+            };
+
+            return View(vetementGenreVM);
         }
 
         // GET: Vetements/Details/5
@@ -48,6 +69,7 @@ namespace MvcVetement.Controllers
         // GET: Vetements/Create
         public IActionResult Create()
         {
+
             return View();
         }
 
@@ -56,7 +78,7 @@ namespace MvcVetement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price")] Vetement vetement)
+        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Vetement vetement)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +110,7 @@ namespace MvcVetement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price")] Vetement vetement)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Vetement vetement)
         {
             if (id != vetement.Id)
             {
