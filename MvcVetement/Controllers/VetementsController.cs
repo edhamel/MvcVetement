@@ -42,7 +42,7 @@ namespace MvcVetement.Controllers
             var vetementGenreVM = new VetementGenreViewModel
             {
                 Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                Movies = await vetements.ToListAsync()
+                Vetements = await vetements.ToListAsync()
             };
 
             return View(vetementGenreVM);

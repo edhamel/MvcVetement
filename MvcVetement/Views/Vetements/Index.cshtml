@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MvcVetement.Models.Vetement>
+﻿@model MvcVetement.Models.VetementGenreViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -26,25 +26,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.Vetements[0].Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
+                @Html.DisplayNameFor(model => model.Vetements[0].ReleaseDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Genre)
+                @Html.DisplayNameFor(model => model.Vetements[0].Genre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.Vetements[0].Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Rating)
+                @Html.DisplayNameFor(model => model.Vetements[0].Rating)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Vetements) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)

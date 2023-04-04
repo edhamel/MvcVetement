@@ -5,9 +5,9 @@ namespace MvcVetement.Models
 {
     public class VetementGenreViewModel
     {
-        public List<Vetement>? Movies { get; set; }
+        public List<Vetement>? Vetements { get; set; }
         public SelectList? Genres { get; set; }
-        public string? MovieGenre { get; set; }
+        public string? VetementGenre { get; set; }
         public string? SearchString { get; set; }
     }
 }
